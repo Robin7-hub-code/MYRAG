@@ -110,7 +110,6 @@ class KnowledgeService(object):
    def load_local_file(self,path:list[str]=config_data.local_file_path,encoding='utf-8'):
        for pt in path:
             if not os.path.exists(pt):
-                print(f"本地文件不存在，跳过: {pt}")
                 continue
             ext = os.path.splitext(pt)[1].lower()
             if ext=='.pdf':

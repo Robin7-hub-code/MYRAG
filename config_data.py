@@ -6,6 +6,7 @@ if not DASHSCOPE_API_KEY:
         from streamlit import secrets
         DASHSCOPE_API_KEY = secrets.get("DASHSCOPE_API_KEY")
     except ImportError:
+        print("streamlit 未安装，跳过 Streamlit Secrets 读取。")
         DASHSCOPE_API_KEY = None
 
 if DASHSCOPE_API_KEY:
