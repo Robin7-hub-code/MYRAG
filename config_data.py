@@ -1,5 +1,15 @@
 import os
-os.environ["DASHSCOPE_API_KEY"] = "sk-528a3b09bb8e440cbe29d7a315e10472"
+
+DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
+if not DASHSCOPE_API_KEY:
+    try:
+        import streamlit as st
+        DASHSCOPE_API_KEY = st.secrets.get("DASHSCOPE_API_KEY")
+    except Exception:
+        DASHSCOPE_API_KEY = None
+
+if DASHSCOPE_API_KEY:
+    os.environ["DASHSCOPE_API_KEY"] = DASHSCOPE_API_KEY
 
 md5_path= 'md5.txt'
 #Chroma数据库的collection_name和persist_directory参数配置
