@@ -1,12 +1,8 @@
 import json,os
 from typing import Sequence
 
-from langchain_community.chat_models import ChatTongyi
-from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.messages import messages_from_dict, message_to_dict, BaseMessage
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import RunnableWithMessageHistory
 
 
 class FileChatMessageHistory(BaseChatMessageHistory):
@@ -38,31 +34,37 @@ class FileChatMessageHistory(BaseChatMessageHistory):
             json.dump([], f, ensure_ascii=False, indent=4)
 
 
-
-model = ChatTongyi(model="qwen-plus")
-prompt = PromptTemplate.from_template(
-    "你是一位耐心、专业的对话助手。\n\n"
-    "## 历史会话\n{history}\n\n"
-    "## 当前问题\n{input}\n\n"
-    "请结合历史会话的上下文，给出准确、简洁的回答："
-)
-base_chain = prompt  | model | StrOutputParser()
+def get_chat_history(session_id):
+   return FileChatMessageHistory(storage_path="./chat_history",session_id=session_id)
 
 
-def get_chat_history(sessin_id):
-   return FileChatMessageHistory(storage_path="./chat_history",session_id=sessin_id)
+def build_demo_chain():
+    import config_data
+    from langchain_community.chat_models import ChatTongyi
+    from langchain_core.output_parsers import StrOutputParser
+    from langchain_core.prompts import PromptTemplate
+    from langchain_core.runnables import RunnableWithMessageHistory
 
-last_chain = RunnableWithMessageHistory(
-    base_chain,
-    get_chat_history,
-    input_messages_key="input",
-    history_messages_key="history",#模板中的history参数会被替换为这个key对应的消息历史记录，
-    # 而这个消息记录是通过get_chat_history函数获取的，
-    # get_chat_history函数会根据session_id返回对应的消息历史记录，这样就实现了不同用户之间的对话历史隔离
-)
+    model = ChatTongyi(model=config_data.chat_model)
+    prompt = PromptTemplate.from_template(
+        "你是一位耐心、专业的对话助手。\n\n"
+        "## 历史会话\n{history}\n\n"
+        "## 当前问题\n{input}\n\n"
+        "请结合历史会话的上下文，给出准确、简洁的回答："
+    )
+    base_chain = prompt  | model | StrOutputParser()
+    return RunnableWithMessageHistory(
+        base_chain,
+        get_chat_history,
+        input_messages_key="input",
+        history_messages_key="history",#模板中的history参数会被替换为这个key对应的消息历史记录，
+        # 而这个消息记录是通过get_chat_history函数获取的，
+        # get_chat_history函数会根据session_id返回对应的消息历史记录，这样就实现了不同用户之间的对话历史隔离
+    )
 
 if __name__ == "__main__":
     session_config = {"configurable": {"session_id": "user_001"}}  # 每个用户一个session_id,用来区分不同用户的对话历史
+    last_chain = build_demo_chain()
 
     print("第一轮对话：")
     response1 = last_chain.invoke({"input": "小明有一只猫"}, session_config)

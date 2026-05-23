@@ -3,9 +3,7 @@ import time
 import uuid
 import os
 import config_data
-from rag import RagService
 from streamlit import session_state
-from base_knowledge import KnowledgeService
 
 # ── 页面基础配置 ──────────────────────────────────────────────
 st.set_page_config(
@@ -18,6 +16,9 @@ st.set_page_config(
 if not config_data.DASHSCOPE_API_KEY:
     st.error("未检测到 DASHSCOPE_API_KEY，请在环境变量或 Streamlit Secrets 中配置。")
     st.stop()
+
+from rag import RagService
+from base_knowledge import KnowledgeService
 
 # ── 自定义样式 ────────────────────────────────────────────────
 st.markdown("""
