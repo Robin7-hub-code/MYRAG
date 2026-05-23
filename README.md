@@ -36,3 +36,8 @@ DASHSCOPE_API_KEY = "你的通义千问API Key"
 - `chroma_db/`、`graphicdata/`、`chat_history/`、`md5.txt` 已配置为本地/生成文件，不应提交到仓库。
 - 云端首次部署通常没有本地向量库数据，需要在页面上传文档后重新构建知识库。
 - 若 `config_data.py` 中配置的本地文件在云端不存在，程序会自动跳过，不会阻塞启动。
+
+## 4. 部署排查
+
+- 当前 `requirements.txt` 不需要额外安装 `langchain-tongyi`；在 Streamlit Cloud 的较新 Python 环境中手动加回该依赖，可能会导致安装失败。
+- 若未配置 `DASHSCOPE_API_KEY`，应用现在会在页面直接提示，而不是在导入阶段因为初始化通义千问模型而崩溃。

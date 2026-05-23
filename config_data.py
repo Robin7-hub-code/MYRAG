@@ -1,13 +1,20 @@
 import os
 
-DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
-if not DASHSCOPE_API_KEY:
+
+def load_dashscope_api_key():
+    api_key = os.environ.get("DASHSCOPE_API_KEY")
+    if api_key:
+        return api_key
+
     try:
-        from streamlit import secrets
-        if "DASHSCOPE_API_KEY" in secrets:
-            DASHSCOPE_API_KEY = secrets["DASHSCOPE_API_KEY"]
-    except ImportError:
-        pass
+        import streamlit as st
+
+        return st.secrets.get("DASHSCOPE_API_KEY")
+    except Exception:
+        return None
+
+
+DASHSCOPE_API_KEY = load_dashscope_api_key()
 
 if DASHSCOPE_API_KEY:
     os.environ["DASHSCOPE_API_KEY"] = DASHSCOPE_API_KEY
