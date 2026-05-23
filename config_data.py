@@ -1,5 +1,4 @@
 import os
-import sys
 
 DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
 if not DASHSCOPE_API_KEY:
@@ -8,8 +7,7 @@ if not DASHSCOPE_API_KEY:
         if "DASHSCOPE_API_KEY" in secrets:
             DASHSCOPE_API_KEY = secrets["DASHSCOPE_API_KEY"]
     except ImportError:
-        sys.stderr.write("streamlit 未安装，跳过 Streamlit Secrets 读取。\n")
-        DASHSCOPE_API_KEY = None
+        pass
 
 if DASHSCOPE_API_KEY:
     os.environ["DASHSCOPE_API_KEY"] = DASHSCOPE_API_KEY
