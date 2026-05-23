@@ -9,7 +9,7 @@
 1. 打开 https://share.streamlit.io 并使用 GitHub 登录。
 2. 点击 **New app**。
 3. 选择仓库：`Robin7-hub-code/MYRAG`
-4. 选择分支：`master`（或你的默认分支 `main`）
+4. 选择分支：`master`
 5. **Main file path** 填写：`app_web.py`
 6. 点击 **Deploy!**
 
