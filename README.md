@@ -41,3 +41,4 @@ DASHSCOPE_API_KEY = "你的通义千问API Key"
 
 - 当前 `requirements.txt` 不需要额外安装 `langchain-tongyi`；在 Streamlit Cloud 的较新 Python 环境中手动加回该依赖，可能会导致安装失败。
 - 若未配置 `DASHSCOPE_API_KEY`，应用现在会在页面直接提示，而不是在导入阶段因为初始化通义千问模型而崩溃。
+- 项目已在 `config_data.py` 中默认设置 `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python`，用于规避 Streamlit Cloud 上 `chromadb` / `opentelemetry` / `protobuf` 导入链的兼容性报错，通常无需再额外手动设置。

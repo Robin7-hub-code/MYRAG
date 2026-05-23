@@ -1,5 +1,6 @@
 import os
 
+os.environ.setdefault("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python")
 
 def load_dashscope_api_key():
     api_key = os.environ.get("DASHSCOPE_API_KEY")
