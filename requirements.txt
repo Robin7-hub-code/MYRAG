@@ -4,7 +4,8 @@ langchain-core
 langchain-community
 langchain-chroma
 langchain-text-splitters
+langchain-tongyi
 chromadb
 dashscope
 pypdf
-
+tiktoken
