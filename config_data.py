@@ -3,9 +3,9 @@ import os
 DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
 if not DASHSCOPE_API_KEY:
     try:
-        import streamlit as st
-        DASHSCOPE_API_KEY = st.secrets.get("DASHSCOPE_API_KEY")
-    except Exception:
+        from streamlit import secrets
+        DASHSCOPE_API_KEY = secrets.get("DASHSCOPE_API_KEY")
+    except ImportError:
         DASHSCOPE_API_KEY = None
 
 if DASHSCOPE_API_KEY:
