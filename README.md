@@ -13,7 +13,7 @@
    - **Branch**：`master`
    - **Main file path**：`app_web.py`
 4. 点击 **Deploy!**
-5. 等待 2-5 分钟，部署成功后会生成类似 `https://xxx.streamlit.app` 的访问链接。
+5. 等待 2 到 5 分钟，部署成功后会生成类似 `https://xxx.streamlit.app` 的访问链接。
 
 项目依赖已写在 `requirements.txt`，Streamlit Cloud 会自动安装。
 
@@ -46,7 +46,7 @@ DASHSCOPE_API_KEY = "你的通义千问API Key"
 1. 打开刚生成的 Streamlit Cloud 链接。
 2. 确认页面未出现 `DASHSCOPE_API_KEY` 缺失提示。
 3. 在左侧 **知识库管理** 区域上传 `txt` 或 `pdf` 文件。
-4. 等待上传完成后，再开始提问。
+4. 等待页面出现“上传成功”提示后，即可直接开始提问，无需额外点击其他按钮。
 
 ## 5. 常见问题排查
 
