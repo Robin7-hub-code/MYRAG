@@ -15,6 +15,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+if not config_data.DASHSCOPE_API_KEY:
+    st.error("未检测到 DASHSCOPE_API_KEY，请在环境变量或 Streamlit Secrets 中配置。")
+    st.stop()
+
 # ── 自定义样式 ────────────────────────────────────────────────
 st.markdown("""
 <style>
