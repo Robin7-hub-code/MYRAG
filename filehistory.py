@@ -34,8 +34,8 @@ class FileChatMessageHistory(BaseChatMessageHistory):
             json.dump([], f, ensure_ascii=False, indent=4)
 
 
-def get_chat_history(sessin_id):
-   return FileChatMessageHistory(storage_path="./chat_history",session_id=sessin_id)
+def get_chat_history(session_id):
+   return FileChatMessageHistory(storage_path="./chat_history",session_id=session_id)
 
 
 def build_demo_chain():
