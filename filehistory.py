@@ -40,7 +40,12 @@ class FileChatMessageHistory(BaseChatMessageHistory):
 
 
 model = ChatTongyi(model="qwen-plus")
-prompt = PromptTemplate.from_template("根据会话历史回答问题，历史会话：{history}，问题：{input}，请给出答案")
+prompt = PromptTemplate.from_template(
+    "你是一位耐心、专业的对话助手。\n\n"
+    "## 历史会话\n{history}\n\n"
+    "## 当前问题\n{input}\n\n"
+    "请结合历史会话的上下文，给出准确、简洁的回答："
+)
 base_chain = prompt  | model | StrOutputParser()
 
 

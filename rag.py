@@ -14,19 +14,34 @@ class RagService(object):
         )
         self.prompt_template=ChatPromptTemplate.from_messages(
             [
-                ("system","你是我的人工智能助手，协助我回答问题,现在有一些相关的文档内容可以参考：{Data}"),
-                ("system","请结合这些历史会话记录回答"),
+                ("system",
+                 "你是一位专业的 STL（C++ 标准模板库）技术专家助手，擅长解答 STL 源码、数据结构与算法相关问题。\n\n"
+                 "## 参考知识库\n"
+                 "以下是从知识库中检索到的与问题最相关的文档片段，请优先基于这些内容作答：\n"
+                 "```\n{Data}\n```\n\n"
+                 "## 回答规范\n"
+                 "1. 若知识库内容足以回答问题，请严格依据知识库内容作答，并在回答末尾注明「来源：知识库」。\n"
+                 "2. 若知识库内容不足，可结合你自身的专业知识补充，但须明确说明哪部分来自知识库、哪部分来自模型推断。\n"
+                 "3. 回答请条理清晰，对代码相关问题给出示例；对概念性问题给出简洁定义后再展开解释。\n"
+                 "4. 如果问题与 STL 或 C++ 无关，礼貌地提示用户本助手专注于 STL 领域。"
+                ),
+                ("system", "## 历史会话\n请结合以下对话历史理解用户的上下文意图："),
                 MessagesPlaceholder("history"),
-                ("human","根据上面提供的文档内容，回答以下问题：{question}"),
+                ("human", "{question}"),
             ]
         )
         self.chat_model=None
         self.chain=self.__get_chain()
-    def __format_doc(self,docs:list[Document]):
-        res=""
-        for doc in docs:
-            res+=f"{doc.page_content}"
-        return res
+    def __format_doc(self, docs: list[Document]):
+        if not docs:
+            return "（未检索到相关文档，请依据自身知识回答）"
+        parts = []
+        for i, doc in enumerate(docs, 1):
+            source = doc.metadata.get("source", "未知来源")
+            page   = doc.metadata.get("page", "")
+            loc    = f"{source}" + (f" 第{page}页" if page != "" else "")
+            parts.append(f"【片段{i} | {loc}】\n{doc.page_content.strip()}")
+        return "\n\n".join(parts)
     '''from operator import itemgetter
   
     getter = itemgetter("question")  # 创建一个itemgetter对象,它会从输入的字典中提取键为"question"的值
